@@ -6,7 +6,7 @@ $reservations = array(
         $user = intval(getUser($_SERVER['HTTP_TOKEN']));
 
         $query = "
-            select reservations.id, user_id, locations.name as loc_name, address, services.name as ser_name, date, time_start, time_end, state from reservations
+            select reservations.id, user_id, locations.name as loc_name, address, services.name as ser_name, date, time_start, state from reservations
                 join locations on locations.id = location_id
                 join services on services.id = service_id
                 join users on users.id = user_id
@@ -37,11 +37,10 @@ $reservations = array(
         $service_id = $_POST['service_id'];
         $date = $_POST['date'];
         $time_start = $_POST['time_start'];
-        $time_end = $_POST['time_end'];
 
         $stmt = $db->query("
-            insert into reservations (user_id, location_id, service_id, date, time_start, time_end, state) values
-                ($user, $location_id, $service_id, '$date', '$time_start', '$time_end', 'pending');
+            insert into reservations (user_id, location_id, service_id, date, time_start, state) values
+                ($user, $location_id, $service_id, '$date', '$time_start', 'pending');
         ");
 
         return json_encode(array('success' => $stmt));
